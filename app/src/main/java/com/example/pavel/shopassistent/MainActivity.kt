@@ -40,33 +40,39 @@ class MainActivity : AppCompatActivity() {
         })
 
         editPrice.addTextChangedListener(CustomTextWatcher())
-        editCount.addTextChangedListener(CustomTextWatcher())
         editPrice.requestFocus()
 
         val arrayAdapter = ArrayAdapter.createFromResource(this, R.array.dimensions, R.layout.spinner_item)
         arrayAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown)
         spinner.adapter = arrayAdapter
+
+        countColumn.text = String.format(getString(R.string.count_from_table), textDimensions[spinner.selectedItemPosition])
+
+        dataAdapter = DataAdapter(multiplyDimensions[currentSpinnerPosition])
+        dataAdapter.setHasStableIds(true)
+        list.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            itemAnimator.apply {
+                addDuration = 300
+                changeDuration = 300
+            }
+            adapter = dataAdapter
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(arg0: AdapterView<*>, view: View, position: Int, id: Long) {
-                countColumn.text = String.format(getString(R.string.count_from_table),textDimensions[position])
-                if (currentSpinnerPosition != position) clearList()
+                if (currentSpinnerPosition != position) {
+                    countColumn.text = String.format(getString(R.string.count_from_table), textDimensions[position])
+                    currentSpinnerPosition = position
+                    dataAdapter.multiply = multiplyDimensions[currentSpinnerPosition]
+                    dataAdapter.notifyDataSetChanged()
+                }
             }
+
             override fun onNothingSelected(arg0: AdapterView<*>) {}
         }
-        currentSpinnerPosition = spinner.selectedItemPosition
-
-        countColumn.text = String.format(getString(R.string.count_from_table),textDimensions[spinner.selectedItemPosition])
-
-        dataAdapter = DataAdapter(multiplyDimensions[spinner.selectedItemPosition])
-        dataAdapter.setHasStableIds(true)
-        list.apply{
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            itemAnimator.apply{
-                addDuration = 300
-                changeDuration = 300}
-            adapter = dataAdapter}
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel::class.java)
         viewModel.getLiveDataItems().observe(this, Observer<List<QueryItem>> { dataAdapter.submitList(it as ArrayList<QueryItem>) })

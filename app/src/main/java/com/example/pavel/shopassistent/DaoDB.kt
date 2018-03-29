@@ -1,10 +1,14 @@
 package com.example.pavel.shopassistent
 
 import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
+import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 
-@Dao interface DaoDB {
+@Dao
+interface DaoDB {
 
     @Query("SELECT id, price, count, price/count AS sum, (SELECT MIN(price/count) FROM items) = price/count AS min_flag  FROM  items")
     fun getAllQueryItems(): LiveData<List<QueryItem>>
