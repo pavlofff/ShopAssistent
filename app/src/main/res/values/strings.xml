@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ShopAssistent</string>
+    <string name="clear">ОЧИСТИТЬ</string>
+    <string name="price">Цена</string>
+    <string name="count">Количество</string>
+    <string name="message_error1">Заполните все поля</string>
+    <string name="count_from_table">Кол-во, %s</string>
+    <string-array name="dimensions">
+        <item>за 1 кг.</item>
+        <item>за 100 гр.</item>
+        <item>за 1 шт.</item>
+        <item>за 10 шт.</item>
+    </string-array>
+</resources>
