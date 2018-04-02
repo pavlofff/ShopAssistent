@@ -1,5 +1,6 @@
 package com.example.pavel.shopassistent
 
+import android.app.ProgressDialog.show
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -18,7 +19,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import com.example.pavel.shopassistent.R.id.*
 import kotlinx.android.synthetic.main.activity_start.*
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -58,7 +63,9 @@ class MainActivity : AppCompatActivity() {
                 changeDuration = 300
             }
             adapter = dataAdapter
+
         }
+
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
@@ -142,6 +149,7 @@ class MainActivity : AppCompatActivity() {
         val price = editPrice.text.toString().toDouble()
         val count = editCount.text.toString().toDouble()
         viewModel.insertItem(Item(price, count))
+        list.smoothScrollToPosition(list.adapter.itemCount)
     }
 }
 
